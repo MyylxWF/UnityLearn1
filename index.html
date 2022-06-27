@@ -58,9 +58,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/Plane.loader.js";
       var config = {
-        dataUrl: buildUrl + "/Plane.data.unityweb",
-        frameworkUrl: buildUrl + "/Plane.framework.js.unityweb",
-        codeUrl: buildUrl + "/Plane.wasm.unityweb",
+        dataUrl: buildUrl + "/Plane.data",
+        frameworkUrl: buildUrl + "/Plane.framework.js",
+        codeUrl: buildUrl + "/Plane.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "plane",
         productName: "plane",
@@ -91,6 +91,7 @@
         canvas.style.width = window.innerWidth + 'px';
         canvas.style.height = window.innerHeight + 'px';
 
+        unityShowBanner('WebGL builds are not supported on mobile devices.');
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
