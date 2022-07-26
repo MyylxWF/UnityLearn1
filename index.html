@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | UnityAircraftFight</title>
+    <title>Unity WebGL Player | TTC Flappy</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=540 height=960></canvas>
+      <canvas id="unity-canvas" width=1080 height=1920></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">UnityAircraftFight</div>
+        <div id="unity-build-title">TTC Flappy</div>
       </div>
     </div>
     <script>
@@ -55,16 +55,34 @@
         updateBannerVisibility();
       }
 
+      function newMessage(event) {
+            if(event.data && event.data.info){
+                if(event.data.info.address){
+                 window.unityInstance.SendMessage('Canvas', 'SetAddressText', event.data.info.address);
+                }
+                if(event.data.info.headUrl){
+                  window.unityInstance.SendMessage('Canvas', 'LoadHeadImage', event.data.info.headUrl);
+                }
+            }
+      }
+
+      window.addEventListener("message", newMessage, false);
+
+
+      function GetUserInfo(){
+          window.parent.postMessage('userInfo', '*');
+      }
+
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/AirFight.loader.js";
+      var loaderUrl = buildUrl + "/FlappyBird.loader.js";
       var config = {
-        dataUrl: buildUrl + "/AirFight.data.unityweb",
-        frameworkUrl: buildUrl + "/AirFight.framework.js.unityweb",
-        codeUrl: buildUrl + "/AirFight.wasm.unityweb",
+        dataUrl: buildUrl + "/FlappyBird.data.unityweb",
+        frameworkUrl: buildUrl + "/FlappyBird.framework.js.unityweb",
+        codeUrl: buildUrl + "/FlappyBird.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "UnityAircraftFight",
-        productVersion: "0.1",
+        companyName: "ttc",
+        productName: "TTC Flappy",
+        productVersion: "1.1",
         showBanner: unityShowBanner,
       };
 
@@ -90,13 +108,12 @@
 
         canvas.style.width = window.innerWidth + 'px';
         canvas.style.height = window.innerHeight + 'px';
-
-        unityShowBanner('WebGL builds are not supported on mobile devices.');
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "540px";
-        canvas.style.height = "960px";
+        var mHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var mWidth = mHeight * 0.5625;
+        canvas.style.width = mWidth + "px";
+        canvas.style.height = mHeight + "px";
       }
 
       loadingBar.style.display = "block";
@@ -107,6 +124,7 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+          window.unityInstance = unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
