@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | TTC Flappy</title>
+    <title>Unity WebGL Player | Match 3 Game</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1080 height=1920></canvas>
+      <canvas id="unity-canvas" width=480 height=800></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">TTC Flappy</div>
+        <div id="unity-build-title">Match 3 Game</div>
       </div>
     </div>
     <script>
@@ -55,34 +55,16 @@
         updateBannerVisibility();
       }
 
-      function newMessage(event) {
-            if(event.data && event.data.info){
-                if(event.data.info.address){
-                 window.unityInstance.SendMessage('Canvas', 'SetAddressText', event.data.info.address);
-                }
-                if(event.data.info.headUrl){
-                  window.unityInstance.SendMessage('Canvas', 'LoadHeadImage', event.data.info.headUrl);
-                }
-            }
-      }
-
-      window.addEventListener("message", newMessage, false);
-
-
-      function GetUserInfo(){
-          window.parent.postMessage('userInfo', '*');
-      }
-
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/FlappyBird.loader.js";
+      var loaderUrl = buildUrl + "/XXL.loader.js";
       var config = {
-        dataUrl: buildUrl + "/FlappyBird.data.unityweb",
-        frameworkUrl: buildUrl + "/FlappyBird.framework.js.unityweb",
-        codeUrl: buildUrl + "/FlappyBird.wasm.unityweb",
+        dataUrl: buildUrl + "/XXL.data.unityweb",
+        frameworkUrl: buildUrl + "/XXL.framework.js.unityweb",
+        codeUrl: buildUrl + "/XXL.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "ttc",
-        productName: "TTC Flappy",
-        productVersion: "1.1",
+        companyName: "TTC",
+        productName: "Match 3 Game",
+        productVersion: "1.0",
         showBanner: unityShowBanner,
       };
 
@@ -110,10 +92,9 @@
         canvas.style.height = window.innerHeight + 'px';
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        var mHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        var mWidth = mHeight * 0.5625;
-        canvas.style.width = mWidth + "px";
-        canvas.style.height = mHeight + "px";
+
+        canvas.style.width = "480px";
+        canvas.style.height = "800px";
       }
 
       loadingBar.style.display = "block";
@@ -124,7 +105,6 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          window.unityInstance = unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
